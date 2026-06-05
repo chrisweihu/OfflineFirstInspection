@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offline_first_inspection/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:offline_first_inspection/core/theme/theme.dart';
@@ -47,7 +48,7 @@ class _MainAppState extends State<MainApp> {
   void initState() {
     super.initState();
     if (kDebugMode) {
-      //debugRepaintRainbowEnabled = true;
+      debugRepaintRainbowEnabled = true;
     }
   }
 

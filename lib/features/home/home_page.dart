@@ -53,12 +53,9 @@ class _HomePageState extends State<HomePage> {
                               child: TabBar(
                                 //padding: .only(bottom: 15), //leave room for safe space
                                 tabs: [
-                                  _buildVerticalTab(Icons.table_bar, "Home"),
-                                  _buildVerticalTab(
-                                    Icons.list,
-                                    "Optimized List",
-                                  ),
-                                  _buildVerticalTab(Icons.article, "Forms"),
+                                  _buildVerticalTab(Icons.home, "Home"),
+                                  _buildVerticalTab(Icons.list, "Repaint"),
+                                  _buildVerticalTab(Icons.image, "Images"),
                                 ],
                               ),
                             ),

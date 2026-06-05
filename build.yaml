@@ -1,0 +1,15 @@
+targets:
+  $default:
+    builders:
+      drift_dev:
+        options:
+          # The directory where the test files are stored:
+          test_dir: lib/features/inspection_form/data/test/drift/ 
+
+          # The directory where the schema files are stored:
+          schema_dir: lib/features/inspection_form/data/drift_schemas/  
+
+          databases:
+            # Required: A name for the database and its path
+            my_database: lib/features/inspection_form/data/database.dart
+

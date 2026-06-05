@@ -1,0 +1,26 @@
+import 'package:fpdart/fpdart.dart';
+import 'package:offline_first_inspection/core/error/failtures.dart';
+import 'package:offline_first_inspection/core/usecase/usecase.dart';
+import 'package:offline_first_inspection/core/common/entities/user.dart';
+import 'package:offline_first_inspection/features/auth/domain/repository/auth_repository.dart';
+
+class UserLogin implements IUseCase<User, UserLoginParams> {
+  final IAuthRepository authRepository;
+
+  const UserLogin(this.authRepository);
+
+  @override
+  Future<Either<Failure, User>> call(UserLoginParams params) async {
+    return await authRepository.loginWithEmailPassword(
+      email: params.email,
+      password: params.password,
+    );
+  }
+}
+
+class UserLoginParams {
+  final String email;
+  final String password;
+
+  UserLoginParams({required this.email, required this.password});
+}

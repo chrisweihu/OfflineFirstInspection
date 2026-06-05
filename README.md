@@ -10,9 +10,9 @@ State Management:
 User Action 
 -> Bloc Event/or Cubit 
 -> Bloc Event handler 
--> execute Use Case (Data source CRUD operation + Business logic) 
+-> execute Use Case (Data source CRUD operations + Business logic) 
 -> Bloc emit new State 
--> UI BlockBuilder listen to refresh based on new State.
+-> UI BlocBuilder listen to and refresh based on new State.
 ```
 
 Dependency Injection (Service Locator):

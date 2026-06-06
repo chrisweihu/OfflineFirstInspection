@@ -48,7 +48,7 @@ class _MainAppState extends State<MainApp> {
   void initState() {
     super.initState();
     if (kDebugMode) {
-      debugRepaintRainbowEnabled = true;
+      //debugRepaintRainbowEnabled = true;
     }
   }
 

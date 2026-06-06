@@ -86,4 +86,8 @@ I use feature based project structure which is flutter modern standard:
             /presentation (bloc)
 ```
 
+Architecture Design Diagram:
+
+![Architecture Design Diagram](./readme/architecture_diagram.png)
+
       

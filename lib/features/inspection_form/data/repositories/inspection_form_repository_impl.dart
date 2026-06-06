@@ -11,25 +11,26 @@ class InspectionFormRepositoryImpl implements IInspectionFormRepository {
   final IInspectionFormLocalDataSource localDataSource;
   final IConnectionChecker connectionChecker;
 
-  InspectionFormRepositoryImpl({
-    required this.localDataSource,
-    required this.connectionChecker,
-    required this.remoteDataSource,
-  });
+  InspectionFormRepositoryImpl({required this.localDataSource, required this.connectionChecker, required this.remoteDataSource});
 
   @override
   Future<Either<Failure, List<InspectionFormDto>>> syncInspectionForms() async {
     try {
-      final res = await remoteDataSource.syncInspectionForms();
-      return right(res);
+      final offlineEdits = (await localDataSource.getAllInspections()).where((e) => e.dirty).toList();
+      final latest = await remoteDataSource.syncInspectionForms(offlineEdits);
+      //write latest syned result from server into local db
+      for (final dto in latest) {
+        await localDataSource.submitInspectionForm(dto: dto, markDirty: false);
+      }
+
+      return right(latest);
     } catch (e) {
       return left(Failure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, List<InspectionFormDto>>>
-  getAllLocalInspectionForms() async {
+  Future<Either<Failure, List<InspectionFormDto>>> getAllLocalInspectionForms() async {
     try {
       final res = await localDataSource.getAllInspections();
       return right(res);
@@ -39,13 +40,8 @@ class InspectionFormRepositoryImpl implements IInspectionFormRepository {
   }
 
   @override
-  Future<Either<Failure, InspectionFormDto>> submitLocalInspectionForm({
-    required InspectionFormDto dto,
-  }) async {
-    final res = await localDataSource.submitInspectionForm(
-      dto: dto,
-      markDirty: true,
-    );
+  Future<Either<Failure, InspectionFormDto>> submitLocalInspectionForm({required InspectionFormDto dto}) async {
+    final res = await localDataSource.submitInspectionForm(dto: dto, markDirty: true);
     return res;
   }
 }

@@ -33,29 +33,6 @@ class InspectionFormDto {
     this.dirty = false,
   });
 
-  factory InspectionFormDto.fromJson(Map<String, dynamic> json) =>
-      _$InspectionFormDtoFromJson(json);
+  factory InspectionFormDto.fromJson(Map<String, dynamic> json) => _$InspectionFormDtoFromJson(json);
   Map<String, dynamic> toJson() => _$InspectionFormDtoToJson(this);
-
-  // InspectionFormDto copyWith({
-  //   String? id,
-  //   InspectionStatus? status,
-  //   String? inspector,
-  //   DateTime? date,
-  //   String? summary,
-  //   bool? reviewRequired,
-  //   String? reviewDescription,
-  //   bool? actionRequired,
-  //   String? actionDescription,
-  // }) => InspectionFormDto(
-  //   id: id ?? this.id,
-  //   status: status ?? this.status,
-  //   inspector: inspector ?? this.inspector,
-  //   date: date ?? this.date,
-  //   summary: summary ?? this.summary,
-  //   reviewRequired: reviewRequired ?? this.reviewRequired,
-  //   reviewDescription: reviewDescription ?? this.reviewDescription,
-  //   actionRequired: actionRequired ?? this.actionRequired,
-  //   actionDescription: actionDescription ?? this.actionDescription,
-  // );
 }

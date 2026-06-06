@@ -32,10 +32,7 @@ Future<void> initDependencies() async {
   //and the Supabase init are fully awaited before the UI tries to fire that first query.
   WidgetsFlutterBinding.ensureInitialized();
 
-  var supabase = await Supabase.initialize(
-    url: AppSecrets.supabaseUrl,
-    publishableKey: AppSecrets.supabaseAnnoKey,
-  );
+  var supabase = await Supabase.initialize(url: AppSecrets.supabaseUrl, publishableKey: AppSecrets.supabaseAnnoKey);
 
   getIt.registerLazySingleton<SupabaseClient>(() => supabase.client);
 
@@ -50,20 +47,11 @@ Future<void> initDependencies() async {
 void _initAuth() {
   getIt
     //DateSource
-    ..registerFactory<IAuthRemoteDataSource>(
-      () => AuthRemoteDataSourceImpl(getIt<SupabaseClient>()),
-    )
+    ..registerFactory<IAuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(getIt<SupabaseClient>()))
     //Repositories
     ..registerFactory<InternetConnection>(() => InternetConnection())
-    ..registerFactory<IConnectionChecker>(
-      () => ConnectionCheckerImpl(getIt<InternetConnection>()),
-    )
-    ..registerFactory<IAuthRepository>(
-      () => AuthRepositoryImpl(
-        getIt<IAuthRemoteDataSource>(),
-        getIt<IConnectionChecker>(),
-      ),
-    )
+    ..registerFactory<IConnectionChecker>(() => ConnectionCheckerImpl(getIt<InternetConnection>()))
+    ..registerFactory<IAuthRepository>(() => AuthRepositoryImpl(getIt<IAuthRemoteDataSource>(), getIt<IConnectionChecker>()))
     //UseCase
     ..registerFactory(() => UserSignUp(getIt<IAuthRepository>()))
     ..registerFactory(() => UserLogin(getIt<IAuthRepository>()))
@@ -82,15 +70,8 @@ void _initAuth() {
 void _initInspectionForm() {
   getIt
     //DateSource
-    ..registerFactory<IInspectionFormLocalDataSource>(
-      () => InspectionFormLocalDataSourceImpl(database: getIt<AppDatabase>()),
-    )
-    ..registerFactory<IInspectionFormRemoteDataSource>(
-      () => InspectionFormRemoteDataSourceImpl(
-        supabaseClient: getIt<SupabaseClient>(),
-        localDataSource: getIt<IInspectionFormLocalDataSource>(),
-      ),
-    )
+    ..registerFactory<IInspectionFormLocalDataSource>(() => InspectionFormLocalDataSourceImpl(database: getIt<AppDatabase>()))
+    ..registerFactory<IInspectionFormRemoteDataSource>(() => InspectionFormRemoteDataSourceImpl(supabaseClient: getIt<SupabaseClient>()))
     //Repositories
     ..registerFactory<IInspectionFormRepository>(
       () => InspectionFormRepositoryImpl(
@@ -100,16 +81,9 @@ void _initInspectionForm() {
       ),
     )
     //Use cases
-    ..registerFactory<GetAllLocalInspectionForms>(
-      () =>
-          GetAllLocalInspectionForms(repo: getIt<IInspectionFormRepository>()),
-    )
-    ..registerFactory<SubmitInspectionForm>(
-      () => SubmitInspectionForm(repo: getIt<IInspectionFormRepository>()),
-    )
-    ..registerFactory<SyncInspectionForms>(
-      () => SyncInspectionForms(repo: getIt<IInspectionFormRepository>()),
-    )
+    ..registerFactory<GetAllLocalInspectionForms>(() => GetAllLocalInspectionForms(repo: getIt<IInspectionFormRepository>()))
+    ..registerFactory<SubmitInspectionForm>(() => SubmitInspectionForm(repo: getIt<IInspectionFormRepository>()))
+    ..registerFactory<SyncInspectionForms>(() => SyncInspectionForms(repo: getIt<IInspectionFormRepository>()))
     //Bloc
     ..registerFactory<FormCheckboxCubit>(() => FormCheckboxCubit())
     ..registerLazySingleton<InspectionTableBloc>(
@@ -118,9 +92,5 @@ void _initInspectionForm() {
         syncInspectionForms: getIt<SyncInspectionForms>(),
       ),
     )
-    ..registerFactory<InspectionFormBloc>(
-      () => InspectionFormBloc(
-        submitInspectionForm: getIt<SubmitInspectionForm>(),
-      ),
-    );
+    ..registerFactory<InspectionFormBloc>(() => InspectionFormBloc(submitInspectionForm: getIt<SubmitInspectionForm>()));
 }

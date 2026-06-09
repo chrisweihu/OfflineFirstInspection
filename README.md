@@ -90,4 +90,8 @@ Architecture Design Diagram:
 
 ![Architecture Design Diagram](./readme/architecture_diagram.png)
 
-      
+
+
+I would like to give a special shout-out to the ![@RivaanRanawat](https://www.youtube.com/@RivaanRanawat) YouTube channel. I utilized some of his tutorial's UI theme classes to streamline the app's cosmetics, allowing me to focus heavily on core functionality.
+
+My project aligns closely with his architectural choices, and I followed his Clean Architecture setup. The main divergence is in the local data layer: while his project uses Hive NoSQL, I implemented a relational database using Drift. I highly recommend checking out his channel for excellent development content.

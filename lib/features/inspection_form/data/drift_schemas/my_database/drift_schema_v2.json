@@ -126,6 +126,36 @@
             "default_dart": null,
             "default_client_dart": null,
             "dsl_features": []
+          },
+          {
+            "name": "location_x",
+            "getter_name": "locationX",
+            "moor_type": "double",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "location_y",
+            "getter_name": "locationY",
+            "moor_type": "double",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "coord_system",
+            "getter_name": "coordSystem",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
           }
         ],
         "is_virtual": false,
@@ -143,7 +173,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"inspection_forms\" (\"id\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"inspector\" TEXT NOT NULL, \"date\" INTEGER NULL, \"summary\" TEXT NOT NULL, \"review_required\" INTEGER NOT NULL CHECK (\"review_required\" IN (0, 1)), \"review_description\" TEXT NOT NULL, \"action_required\" INTEGER NOT NULL CHECK (\"action_required\" IN (0, 1)), \"action_description\" TEXT NOT NULL, \"dirty\" INTEGER NOT NULL CHECK (\"dirty\" IN (0, 1)), PRIMARY KEY (\"id\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"inspection_forms\" (\"id\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"inspector\" TEXT NOT NULL, \"date\" INTEGER NULL, \"summary\" TEXT NOT NULL, \"review_required\" INTEGER NOT NULL CHECK (\"review_required\" IN (0, 1)), \"review_description\" TEXT NOT NULL, \"action_required\" INTEGER NOT NULL CHECK (\"action_required\" IN (0, 1)), \"action_description\" TEXT NOT NULL, \"dirty\" INTEGER NOT NULL CHECK (\"dirty\" IN (0, 1)), \"location_x\" REAL NOT NULL, \"location_y\" REAL NOT NULL, \"coord_system\" TEXT NOT NULL, PRIMARY KEY (\"id\"));"
         }
       ]
     }

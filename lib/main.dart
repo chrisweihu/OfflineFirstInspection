@@ -9,6 +9,7 @@ import 'package:offline_first_inspection/features/auth/presentation/pages/login_
 import 'package:offline_first_inspection/features/home/home_page.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/blocs/inspection_table/inspection_table_bloc.dart';
 import 'package:offline_first_inspection/init_dependencies.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
   await initDependencies();
@@ -23,6 +24,11 @@ void main() async {
   // 2. SET COUNT LIMIT (e.g., store only 100 images instead of 1000)
   // Fewer images in memory means faster eviction and lower RAM overhead.
   PaintingBinding.instance.imageCache.maximumSize = 100;
+
+  if (kDebugMode) {
+    final appDocumentsDir = await getApplicationDocumentsDirectory();
+    print('${appDocumentsDir.absolute}');
+  }
 
   runApp(
     MultiBlocProvider(

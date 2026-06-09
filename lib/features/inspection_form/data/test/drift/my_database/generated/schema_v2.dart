@@ -92,6 +92,30 @@ class InspectionForms extends Table
     requiredDuringInsert: true,
     $customConstraints: 'NOT NULL CHECK (dirty IN (0, 1))',
   );
+  late final GeneratedColumn<double> locationX = GeneratedColumn<double>(
+    'location_x',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<double> locationY = GeneratedColumn<double>(
+    'location_y',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> coordSystem = GeneratedColumn<String>(
+    'coord_system',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -104,6 +128,9 @@ class InspectionForms extends Table
     actionRequired,
     actionDescription,
     dirty,
+    locationX,
+    locationY,
+    coordSystem,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -156,6 +183,18 @@ class InspectionForms extends Table
         DriftSqlType.int,
         data['${effectivePrefix}dirty'],
       )!,
+      locationX: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}location_x'],
+      )!,
+      locationY: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}location_y'],
+      )!,
+      coordSystem: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}coord_system'],
+      )!,
     );
   }
 
@@ -182,6 +221,9 @@ class InspectionFormsData extends DataClass
   final int actionRequired;
   final String actionDescription;
   final int dirty;
+  final double locationX;
+  final double locationY;
+  final String coordSystem;
   const InspectionFormsData({
     required this.id,
     required this.status,
@@ -193,6 +235,9 @@ class InspectionFormsData extends DataClass
     required this.actionRequired,
     required this.actionDescription,
     required this.dirty,
+    required this.locationX,
+    required this.locationY,
+    required this.coordSystem,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -209,6 +254,9 @@ class InspectionFormsData extends DataClass
     map['action_required'] = Variable<int>(actionRequired);
     map['action_description'] = Variable<String>(actionDescription);
     map['dirty'] = Variable<int>(dirty);
+    map['location_x'] = Variable<double>(locationX);
+    map['location_y'] = Variable<double>(locationY);
+    map['coord_system'] = Variable<String>(coordSystem);
     return map;
   }
 
@@ -224,6 +272,9 @@ class InspectionFormsData extends DataClass
       actionRequired: Value(actionRequired),
       actionDescription: Value(actionDescription),
       dirty: Value(dirty),
+      locationX: Value(locationX),
+      locationY: Value(locationY),
+      coordSystem: Value(coordSystem),
     );
   }
 
@@ -243,6 +294,9 @@ class InspectionFormsData extends DataClass
       actionRequired: serializer.fromJson<int>(json['actionRequired']),
       actionDescription: serializer.fromJson<String>(json['actionDescription']),
       dirty: serializer.fromJson<int>(json['dirty']),
+      locationX: serializer.fromJson<double>(json['locationX']),
+      locationY: serializer.fromJson<double>(json['locationY']),
+      coordSystem: serializer.fromJson<String>(json['coordSystem']),
     );
   }
   @override
@@ -259,6 +313,9 @@ class InspectionFormsData extends DataClass
       'actionRequired': serializer.toJson<int>(actionRequired),
       'actionDescription': serializer.toJson<String>(actionDescription),
       'dirty': serializer.toJson<int>(dirty),
+      'locationX': serializer.toJson<double>(locationX),
+      'locationY': serializer.toJson<double>(locationY),
+      'coordSystem': serializer.toJson<String>(coordSystem),
     };
   }
 
@@ -273,6 +330,9 @@ class InspectionFormsData extends DataClass
     int? actionRequired,
     String? actionDescription,
     int? dirty,
+    double? locationX,
+    double? locationY,
+    String? coordSystem,
   }) => InspectionFormsData(
     id: id ?? this.id,
     status: status ?? this.status,
@@ -284,6 +344,9 @@ class InspectionFormsData extends DataClass
     actionRequired: actionRequired ?? this.actionRequired,
     actionDescription: actionDescription ?? this.actionDescription,
     dirty: dirty ?? this.dirty,
+    locationX: locationX ?? this.locationX,
+    locationY: locationY ?? this.locationY,
+    coordSystem: coordSystem ?? this.coordSystem,
   );
   InspectionFormsData copyWithCompanion(InspectionFormsCompanion data) {
     return InspectionFormsData(
@@ -305,6 +368,11 @@ class InspectionFormsData extends DataClass
           ? data.actionDescription.value
           : this.actionDescription,
       dirty: data.dirty.present ? data.dirty.value : this.dirty,
+      locationX: data.locationX.present ? data.locationX.value : this.locationX,
+      locationY: data.locationY.present ? data.locationY.value : this.locationY,
+      coordSystem: data.coordSystem.present
+          ? data.coordSystem.value
+          : this.coordSystem,
     );
   }
 
@@ -320,7 +388,10 @@ class InspectionFormsData extends DataClass
           ..write('reviewDescription: $reviewDescription, ')
           ..write('actionRequired: $actionRequired, ')
           ..write('actionDescription: $actionDescription, ')
-          ..write('dirty: $dirty')
+          ..write('dirty: $dirty, ')
+          ..write('locationX: $locationX, ')
+          ..write('locationY: $locationY, ')
+          ..write('coordSystem: $coordSystem')
           ..write(')'))
         .toString();
   }
@@ -337,6 +408,9 @@ class InspectionFormsData extends DataClass
     actionRequired,
     actionDescription,
     dirty,
+    locationX,
+    locationY,
+    coordSystem,
   );
   @override
   bool operator ==(Object other) =>
@@ -351,7 +425,10 @@ class InspectionFormsData extends DataClass
           other.reviewDescription == this.reviewDescription &&
           other.actionRequired == this.actionRequired &&
           other.actionDescription == this.actionDescription &&
-          other.dirty == this.dirty);
+          other.dirty == this.dirty &&
+          other.locationX == this.locationX &&
+          other.locationY == this.locationY &&
+          other.coordSystem == this.coordSystem);
 }
 
 class InspectionFormsCompanion extends UpdateCompanion<InspectionFormsData> {
@@ -365,6 +442,9 @@ class InspectionFormsCompanion extends UpdateCompanion<InspectionFormsData> {
   final Value<int> actionRequired;
   final Value<String> actionDescription;
   final Value<int> dirty;
+  final Value<double> locationX;
+  final Value<double> locationY;
+  final Value<String> coordSystem;
   final Value<int> rowid;
   const InspectionFormsCompanion({
     this.id = const Value.absent(),
@@ -377,6 +457,9 @@ class InspectionFormsCompanion extends UpdateCompanion<InspectionFormsData> {
     this.actionRequired = const Value.absent(),
     this.actionDescription = const Value.absent(),
     this.dirty = const Value.absent(),
+    this.locationX = const Value.absent(),
+    this.locationY = const Value.absent(),
+    this.coordSystem = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   InspectionFormsCompanion.insert({
@@ -390,6 +473,9 @@ class InspectionFormsCompanion extends UpdateCompanion<InspectionFormsData> {
     required int actionRequired,
     required String actionDescription,
     required int dirty,
+    required double locationX,
+    required double locationY,
+    required String coordSystem,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        status = Value(status),
@@ -399,7 +485,10 @@ class InspectionFormsCompanion extends UpdateCompanion<InspectionFormsData> {
        reviewDescription = Value(reviewDescription),
        actionRequired = Value(actionRequired),
        actionDescription = Value(actionDescription),
-       dirty = Value(dirty);
+       dirty = Value(dirty),
+       locationX = Value(locationX),
+       locationY = Value(locationY),
+       coordSystem = Value(coordSystem);
   static Insertable<InspectionFormsData> custom({
     Expression<String>? id,
     Expression<String>? status,
@@ -411,6 +500,9 @@ class InspectionFormsCompanion extends UpdateCompanion<InspectionFormsData> {
     Expression<int>? actionRequired,
     Expression<String>? actionDescription,
     Expression<int>? dirty,
+    Expression<double>? locationX,
+    Expression<double>? locationY,
+    Expression<String>? coordSystem,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -424,6 +516,9 @@ class InspectionFormsCompanion extends UpdateCompanion<InspectionFormsData> {
       if (actionRequired != null) 'action_required': actionRequired,
       if (actionDescription != null) 'action_description': actionDescription,
       if (dirty != null) 'dirty': dirty,
+      if (locationX != null) 'location_x': locationX,
+      if (locationY != null) 'location_y': locationY,
+      if (coordSystem != null) 'coord_system': coordSystem,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -439,6 +534,9 @@ class InspectionFormsCompanion extends UpdateCompanion<InspectionFormsData> {
     Value<int>? actionRequired,
     Value<String>? actionDescription,
     Value<int>? dirty,
+    Value<double>? locationX,
+    Value<double>? locationY,
+    Value<String>? coordSystem,
     Value<int>? rowid,
   }) {
     return InspectionFormsCompanion(
@@ -452,6 +550,9 @@ class InspectionFormsCompanion extends UpdateCompanion<InspectionFormsData> {
       actionRequired: actionRequired ?? this.actionRequired,
       actionDescription: actionDescription ?? this.actionDescription,
       dirty: dirty ?? this.dirty,
+      locationX: locationX ?? this.locationX,
+      locationY: locationY ?? this.locationY,
+      coordSystem: coordSystem ?? this.coordSystem,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -489,6 +590,15 @@ class InspectionFormsCompanion extends UpdateCompanion<InspectionFormsData> {
     if (dirty.present) {
       map['dirty'] = Variable<int>(dirty.value);
     }
+    if (locationX.present) {
+      map['location_x'] = Variable<double>(locationX.value);
+    }
+    if (locationY.present) {
+      map['location_y'] = Variable<double>(locationY.value);
+    }
+    if (coordSystem.present) {
+      map['coord_system'] = Variable<String>(coordSystem.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -508,6 +618,9 @@ class InspectionFormsCompanion extends UpdateCompanion<InspectionFormsData> {
           ..write('actionRequired: $actionRequired, ')
           ..write('actionDescription: $actionDescription, ')
           ..write('dirty: $dirty, ')
+          ..write('locationX: $locationX, ')
+          ..write('locationY: $locationY, ')
+          ..write('coordSystem: $coordSystem, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();

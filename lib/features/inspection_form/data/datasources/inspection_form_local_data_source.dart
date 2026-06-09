@@ -7,15 +7,11 @@ import 'package:offline_first_inspection/features/inspection_form/data/database.
 import 'package:offline_first_inspection/features/inspection_form/domain/dtos/inspection_form_dto.dart';
 
 abstract interface class IInspectionFormLocalDataSource {
-  Future<Either<Failure, InspectionFormDto>> submitInspectionForm({
-    required InspectionFormDto dto,
-    required bool markDirty,
-  });
+  Future<Either<Failure, InspectionFormDto>> submitInspectionForm({required InspectionFormDto dto, required bool markDirty});
   Future<List<InspectionFormDto>> getAllInspections();
 }
 
-class InspectionFormLocalDataSourceImpl
-    implements IInspectionFormLocalDataSource {
+class InspectionFormLocalDataSourceImpl implements IInspectionFormLocalDataSource {
   InspectionFormLocalDataSourceImpl({required this.database});
   AppDatabase database;
 
@@ -36,6 +32,9 @@ class InspectionFormLocalDataSourceImpl
               actionRequired: e.reviewRequired,
               actionDescription: e.actionDescription,
               dirty: e.dirty,
+              locationX: e.locationX,
+              locationY: e.locationY,
+              coordSystem: e.coordSystem,
             ),
           )
           .toList();
@@ -47,15 +46,10 @@ class InspectionFormLocalDataSourceImpl
   }
 
   @override
-  Future<Either<Failure, InspectionFormDto>> submitInspectionForm({
-    required InspectionFormDto dto,
-    required bool markDirty,
-  }) async {
+  Future<Either<Failure, InspectionFormDto>> submitInspectionForm({required InspectionFormDto dto, required bool markDirty}) async {
     try {
       //check if table record already exist
-      final existing = await (database.select(
-        database.inspectionForms,
-      )..where((r) => r.id.equals(dto.id))).getSingleOrNull();
+      final existing = await (database.select(database.inspectionForms)..where((r) => r.id.equals(dto.id))).getSingleOrNull();
 
       //insert or update
       if (existing == null) {
@@ -73,12 +67,13 @@ class InspectionFormLocalDataSourceImpl
                 actionRequired: dto.actionRequired,
                 actionDescription: dto.actionDescription,
                 dirty: markDirty,
+                locationX: dto.locationX,
+                locationY: dto.locationY,
+                coordSystem: dto.coordSystem,
               ),
             );
       } else {
-        (database.update(
-          database.inspectionForms,
-        )..where((r) => r.id.equals(existing.id))).write(
+        (database.update(database.inspectionForms)..where((r) => r.id.equals(existing.id))).write(
           InspectionFormsCompanion(
             status: Value(dto.status?.name ?? ''),
             inspector: Value(dto.inspector),
@@ -89,14 +84,15 @@ class InspectionFormLocalDataSourceImpl
             actionRequired: Value(dto.actionRequired),
             actionDescription: Value(dto.actionDescription),
             dirty: Value(markDirty),
+            locationX: Value(dto.locationX),
+            locationY: Value(dto.locationY),
+            coordSystem: Value(dto.coordSystem),
           ),
         );
       }
 
       //return inserted/updated record converted in dto
-      final updated = await (database.select(
-        database.inspectionForms,
-      )..where((r) => r.id.equals(dto.id))).getSingleOrNull();
+      final updated = await (database.select(database.inspectionForms)..where((r) => r.id.equals(dto.id))).getSingleOrNull();
 
       if (updated == null) {
         return left(Failure('Unknow Error'));
@@ -114,6 +110,9 @@ class InspectionFormLocalDataSourceImpl
           actionRequired: updated.actionRequired,
           actionDescription: updated.actionDescription,
           dirty: updated.dirty,
+          locationX: updated.locationX,
+          locationY: updated.locationY,
+          coordSystem: updated.coordSystem,
         ),
       );
     } catch (e) {

@@ -21,6 +21,10 @@ InspectionFormDto _$InspectionFormDtoFromJson(Map<String, dynamic> json) =>
       reviewDescription: json['review_description'] as String? ?? '',
       actionRequired: json['action_required'] as bool? ?? false,
       actionDescription: json['action_description'] as String? ?? '',
+      locationX: (json['location_x'] as num?)?.toDouble() ?? 0,
+      locationY: (json['location_y'] as num?)?.toDouble() ?? 0,
+      coordSystem:
+          json['coord_system'] as String? ?? Constants.coordinateSystemWGS84,
     );
 
 Map<String, dynamic> _$InspectionFormDtoToJson(InspectionFormDto instance) =>
@@ -34,6 +38,9 @@ Map<String, dynamic> _$InspectionFormDtoToJson(InspectionFormDto instance) =>
       'review_description': instance.reviewDescription,
       'action_required': instance.actionRequired,
       'action_description': instance.actionDescription,
+      'location_x': instance.locationX,
+      'location_y': instance.locationY,
+      'coord_system': instance.coordSystem,
     };
 
 const _$InspectionStatusEnumMap = {

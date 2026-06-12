@@ -8,6 +8,7 @@ Here are some of my major Flutter package choices:
 ### State Management:
 
 [Bloc](https://pub.dev/packages/flutter_bloc) is used for flutter state management. It enables unidirectional workflow and enforce clean architecture design.
+Bloc makes unit testing Bloc/Cubit super easy !
 ```
    User Action 
 -> Bloc Event/or Cubit 
@@ -28,8 +29,9 @@ getIt.registerFactory<IAuthRemoteDataSource>(
 
 ### Offline Database:
 
-[drift](https://pub.dev/packages/drift) is great for structured and relational database. It also support complex local db schema migration. 
-
+[drift](https://pub.dev/packages/drift) is great for structured and relational database. 
+It supports complex local db schema migration. 
+It also make testing local schema migrations easy.
 
 ### JSON Serialization Handling:
 
@@ -54,6 +56,16 @@ Map<String, dynamic> toJson() => _$InspectionFormDtoToJson(this);
 
 I use supabase for user authentication and relation database. Firebase is another choice if you want nosql unsgtructured data.
 
+### Tests:
+
+This project provides examples of various type of tests that covers:
+ - Unit Tests
+   - Bloc Tests
+   - Drift DB Migration Tests
+- Widget Tests
+- Integration Tests
+ 
+### Demo:
 App demo: User Login -> Initialial Data Fetech -> CRUD offline inspection form -> Sync with Server 
 
 ![login inspection demo](./readme/loginInspection.gif)

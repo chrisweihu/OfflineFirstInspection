@@ -1,14 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offline_first_inspection/core/common/cubits/app_user/app_user_cubit.dart';
-import 'package:offline_first_inspection/core/theme/theme.dart';
 import 'package:offline_first_inspection/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:offline_first_inspection/features/auth/presentation/pages/login_page.dart';
-import 'package:offline_first_inspection/features/home/home_page.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/blocs/inspection_table/inspection_table_bloc.dart';
 import 'package:offline_first_inspection/init_dependencies.dart';
+import 'package:offline_first_inspection/main_app.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
@@ -27,7 +24,7 @@ void main() async {
 
   if (kDebugMode) {
     final appDocumentsDir = await getApplicationDocumentsDirectory();
-    print('${appDocumentsDir.absolute}');
+    debugPrint('${appDocumentsDir.absolute}');
   }
 
   runApp(
@@ -40,44 +37,4 @@ void main() async {
       child: const MainApp(),
     ),
   );
-}
-
-class MainApp extends StatefulWidget {
-  const MainApp({super.key});
-
-  @override
-  State<MainApp> createState() => _MainAppState();
-}
-
-class _MainAppState extends State<MainApp> {
-  @override
-  void initState() {
-    super.initState();
-    if (kDebugMode) {
-      //debugRepaintRainbowEnabled = true;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      //showPerformanceOverlay: kDebugMode ? true : false,
-      debugShowCheckedModeBanner: false,
-      title: 'Offline Inspection',
-      theme: AppTheme.darkThemeMode,
-      home: BlocSelector<AppUserCubit, AppUserState, bool>(
-        selector: (state) {
-          //only trigger rebuild in the builder: if AppUserState value changed
-          return state is AppUserLoggedInState;
-        },
-        //bool isUserLogged value comes from selector: (state){} return value
-        builder: (context, isUserLogged) {
-          if (isUserLogged) {
-            return const HomePage();
-          }
-          return const LoginPage();
-        },
-      ),
-    );
-  }
 }

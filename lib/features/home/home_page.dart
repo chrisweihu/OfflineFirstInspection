@@ -16,7 +16,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // print('_HomePageState::initState()');
   }
 
   @override
@@ -64,15 +63,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
               // 2. The Main Content Area
-              const Expanded(
-                child: TabBarView(
-                  children: [
-                    InspectionsTablePage(),
-                    OptimizedListScreen(),
-                    OptimizedImageListScreen(),
-                  ],
-                ),
-              ),
+              const Expanded(child: TabBarView(children: [InspectionsTablePage(), OptimizedListScreen(), OptimizedImageListScreen()])),
             ],
           ),
 

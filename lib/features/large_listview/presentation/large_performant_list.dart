@@ -55,10 +55,7 @@ class OptimizedListScreen extends StatefulWidget {
 
 class _OptimizedListScreenState extends State<OptimizedListScreen> {
   // Initial dataset
-  final List<Item> _items = List.generate(
-    20,
-    (i) => Item(i, 'Initial Item $i'),
-  );
+  final List<Item> _items = List.generate(20, (i) => Item(i, 'Initial Item $i'));
 
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
@@ -72,8 +69,7 @@ class _OptimizedListScreenState extends State<OptimizedListScreen> {
 
   void _scrollListener() {
     // Threshold check (200px before end)
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 200) {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
       /// This 'Fire and Forget' pattern is standard Flutter practice
       /// and is the correct way to trigger asynchronous work in a listener sychronous method
       _loadMoreAsync();
@@ -85,17 +81,12 @@ class _OptimizedListScreenState extends State<OptimizedListScreen> {
     setState(() => _isLoading = true);
 
     if (kDebugMode) {
-      print(
-        '${_scrollController.position.pixels} >= ${_scrollController.position.maxScrollExtent} - 200',
-      );
+      debugPrint('${_scrollController.position.pixels} >= ${_scrollController.position.maxScrollExtent} - 200');
     }
     // Simulate an async network or database call
     await Future.delayed(const Duration(seconds: 1));
 
-    final newItems = List.generate(
-      20,
-      (i) => Item(_items.length + i, 'Fetched Item ${_items.length + i}'),
-    );
+    final newItems = List.generate(20, (i) => Item(_items.length + i, 'Fetched Item ${_items.length + i}'));
 
     /// IMPORTANT: ALWAYS check if the widget is still "mounted" before calling setState
     /// Because the _loadMoreAsync() method continues running after _scrollListener is triggered,
@@ -153,16 +144,8 @@ class OptimizedTile extends StatelessWidget {
     return ListTile(
       // 8. CONST CHILD: Static widgets marked as const are never rebuilt
       leading: switch (item.id % 2) {
-        0 => const RepaintBoundary(
-          child: SizedBox.square(
-            dimension: 25,
-            child: CircularProgressIndicator(),
-          ),
-        ),
-        1 => const SizedBox.square(
-          dimension: 25,
-          child: CircularProgressIndicator(),
-        ),
+        0 => const RepaintBoundary(child: SizedBox.square(dimension: 25, child: CircularProgressIndicator())),
+        1 => const SizedBox.square(dimension: 25, child: CircularProgressIndicator()),
         _ => const CircleAvatar(child: Icon(Icons.person)),
       },
 

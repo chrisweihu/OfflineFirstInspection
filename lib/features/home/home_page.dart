@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/pages/inspections_table_page.dart';
+import 'package:offline_first_inspection/features/large_listview/presentation/cubit/image_list/image_list_cubit.dart';
 import 'package:offline_first_inspection/features/large_listview/presentation/large_performant_list.dart';
 import 'package:offline_first_inspection/features/large_listview/presentation/optimized_image_list.dart';
+import 'package:offline_first_inspection/init_dependencies.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,7 +39,7 @@ class _HomePageState extends State<HomePage> {
           //Answer: must use the AutomaticKeepAliveClientMixin on the state of the tab's child widget and override wantKeepAlive to return true. This instructs the RenderObject tree to keep the specific child in memory even when it's not visible.
           body: Row(
             children: [
-              // 1. The Vertical TabBar Container
+              // The Vertical TabBar Container
               !wideScreen
                   ? const SizedBox.shrink()
                   : SizedBox(
@@ -62,8 +65,17 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-              // 2. The Main Content Area
-              const Expanded(child: TabBarView(children: [InspectionsTablePage(), OptimizedListScreen(), OptimizedImageListScreen()])),
+
+              // The Main Content Area
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    const InspectionsTablePage(),
+                    const OptimizedListScreen(),
+                    BlocProvider(create: (BuildContext context) => getIt<ImageListCubit>(), child: const OptimizedImageListScreen()),
+                  ],
+                ),
+              ),
             ],
           ),
 
@@ -82,7 +94,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // the parent RotatedBox uses quarterTurns: 1, and the children use quarterTurns: 3 to stay upright.
+  // The parent RotatedBox uses quarterTurns: 1 and the children use quarterTurns: 3 to stay upright.
   Tab _buildVerticalTab(IconData icon, String label) {
     return Tab(
       child: RotatedBox(

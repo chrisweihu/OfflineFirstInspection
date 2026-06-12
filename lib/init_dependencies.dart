@@ -21,6 +21,7 @@ import 'package:offline_first_inspection/features/inspection_form/domain/usecase
 import 'package:offline_first_inspection/features/inspection_form/presentation/blocs/inspection_form/inspection_form_bloc.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/blocs/inspection_table/inspection_table_bloc.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/cubits/form_field/form_checkbox_cubit.dart';
+import 'package:offline_first_inspection/features/large_listview/presentation/cubit/image_list/image_list_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:get_it/get_it.dart';
 
@@ -86,6 +87,7 @@ void _initInspectionForm() {
     ..registerFactory<SyncInspectionForms>(() => SyncInspectionForms(repo: getIt<IInspectionFormRepository>()))
     //Bloc
     ..registerFactory<FormCheckboxCubit>(() => FormCheckboxCubit())
+    ..registerFactory<ImageListCubit>(() => ImageListCubit())
     ..registerLazySingleton<InspectionTableBloc>(
       () => InspectionTableBloc(
         getAllInspectionForms: getIt<GetAllLocalInspectionForms>(),

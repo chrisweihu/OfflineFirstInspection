@@ -5,8 +5,8 @@ import 'package:offline_first_inspection/core/common/cubits/app_user/app_user_cu
 import 'package:offline_first_inspection/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/blocs/inspection_table/inspection_table_bloc.dart';
 import 'package:offline_first_inspection/init_dependencies.dart';
-import 'package:offline_first_inspection/main.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:offline_first_inspection/main_app.dart';
 
 Future<void> main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -14,9 +14,7 @@ Future<void> main() async {
   await initDependencies();
 
   group('end-to-end test', () {
-    testWidgets('tap on the floating action button, verify counter', (
-      tester,
-    ) async {
+    testWidgets('tap on the floating action button, verify counter', (tester) async {
       // Load app widget.
       final blocProviders = MultiBlocProvider(
         providers: [
@@ -37,19 +35,13 @@ Future<void> main() async {
 
       expect(find.text('Email'), findsOneWidget);
       // Tap the add button.
-      await tester.enterText(
-        find.byKey(const ValueKey('login_email')),
-        '*******@gmail.com',
-      );
+      await tester.enterText(find.byKey(const ValueKey('login_email')), '*******@gmail.com');
 
       // Rebuild the widget after the state has changed.
       await tester.pumpAndSettle();
 
       // Tap the add button.
-      await tester.enterText(
-        find.byKey(const ValueKey('login_password')),
-        '*****',
-      );
+      await tester.enterText(find.byKey(const ValueKey('login_password')), '*****');
 
       // Rebuild the widget after the state has changed.
       await tester.pumpAndSettle();

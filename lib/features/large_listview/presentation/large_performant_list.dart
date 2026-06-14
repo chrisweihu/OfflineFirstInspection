@@ -106,9 +106,9 @@ class _OptimizedListScreenState extends State<OptimizedListScreen> {
       appBar: AppBar(title: const Text('Turn on RepaintBoundary to See Diff')),
       body: ListView.builder(
         controller: _scrollController,
-        // 3. ITEM EXTENT: Tells Flutter exactly how high each item is (prevents layout math)
+        // ITEM EXTENT: Tells Flutter exactly how high each item is (prevents layout math)
         itemExtent: 60.0,
-        // 4. CACHE EXTENT: Pre-renders 5 items off-screen for smoother scrolling
+        // CACHE EXTENT: Pre-renders 5 items off-screen area (both leading and tailing) for smoother scrolling
         cacheExtent: 300.0,
         itemCount: _items.length + (_isLoading ? 1 : 0),
         itemBuilder: (context, index) {
@@ -132,11 +132,11 @@ class _OptimizedListScreenState extends State<OptimizedListScreen> {
   }
 }
 
-// 6. REPAINT BOUNDARY: Isolates this tile's paint layer from the rest of the list
+// REPAINT BOUNDARY: Isolates this tile's paint layer from the rest of the list
 class OptimizedTile extends StatelessWidget {
   final Item item;
 
-  // 7. CONST CONSTRUCTOR: Allows Flutter to skip rebuilding this entire widget if params don't change
+  // CONST CONSTRUCTOR: Allows Flutter to skip rebuilding this entire widget if params don't change
   const OptimizedTile({required Key key, required this.item}) : super(key: key);
 
   @override

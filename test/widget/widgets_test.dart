@@ -25,10 +25,7 @@ Future<void> main() async {
         create: (context) => getIt<FormCheckboxCubit>(),
         child: MaterialApp(
           home: Scaffold(
-            body: InspectionCheckboxField(
-              label: 'Action Required',
-              onSaved: (bool? b) {},
-            ),
+            body: InspectionCheckboxField(label: 'Action Required', onSaved: (bool? b) {}),
           ),
         ),
       ),
@@ -47,11 +44,7 @@ Future<void> main() async {
       MaterialApp(
         home: Scaffold(
           body: Center(
-            child: InspectionTextField(
-              key: testKey,
-              onSaved: (String? p1) {},
-              label: 'Inspection title',
-            ),
+            child: InspectionTextField(key: testKey, onSaved: (String? p1) {}, label: 'Inspection title'),
           ),
         ),
       ),
@@ -60,17 +53,13 @@ Future<void> main() async {
     // Find the MaterialApp widget using the testKey.
     expect(find.byKey(testKey), findsOneWidget);
 
-    //see : https://docs.flutter.dev/cookbook/testing/widget/tap-drag
     await tester.enterText(find.byKey(testKey), 'my@email.com');
 
     expect(find.text('my@email.com'), findsOneWidget);
   });
 
   testWidgets('finds a specific instance', (tester) async {
-    final childWidget = InspectionDropdownField(
-      label: 'drop down field',
-      onSaved: (InspectionStatus? p1) {},
-    );
+    final childWidget = InspectionDropdownField(label: 'drop down field', onSaved: (InspectionStatus? p1) {});
 
     // Provide the childWidget to the Container.
     await tester.pumpWidget(
@@ -86,25 +75,4 @@ Future<void> main() async {
     // Search for the childWidget in the tree and verify it exists.
     expect(find.byWidget(childWidget), findsOneWidget);
   });
-
-  // testWidgets('finds a deep item in a long list', (tester) async {
-  //   await tester.pumpWidget(
-  //     MultiBlocProvider(
-  //       providers: [
-  //         BlocProvider(create: (context) => getIt<InspectionFormBloc>()),
-  //         BlocProvider(create: (context) => getIt<FormCheckboxCubit>()),
-  //       ],
-  //       child: InspectionFormPage(
-  //         formData: InspectionFormDto(
-  //           id: const Uuid().v1(),
-  //           date: DateTime.now(),
-  //         ),
-  //         mode: 'Create',
-  //       ),
-  //     ),
-  //   );
-
-  //   // Enter 'hi' into the TextField.
-  //   await tester.enterText(find.byType(InspectionTextField), 'email');
-  // });
 }

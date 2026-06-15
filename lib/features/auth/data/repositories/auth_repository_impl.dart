@@ -22,13 +22,7 @@ class AuthRepositoryImpl implements IAuthRepository {
         if (session == null) {
           return left(Failure(Constants.noConnectionErrorMessage));
         }
-        return right(
-          UserModel(
-            id: session.user.id,
-            email: session.user.email ?? '',
-            name: '',
-          ),
-        );
+        return right(UserModel(id: session.user.id, email: session.user.email ?? '', name: ''));
       }
 
       final user = await remoteDataSource.getCurrentUserData();
@@ -42,50 +36,13 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
-  Future<Either<Failure, User>> loginWithEmailPassword({
-    required String email,
-    required String password,
-  }) async {
-    return await _getUser(
-      () async => await remoteDataSource.loginWithEmailPassword(
-        email: email,
-        password: password,
-      ),
-    );
-    // try {
-    //   final user = await remoteDataSource.loginWithEmailPassword(
-    //     email: email,
-    //     password: password,
-    //   );
-    //   return right(user);
-    // } on ServerException catch (e) {
-    //   return left(Failure(e.message));
-    // }
+  Future<Either<Failure, User>> loginWithEmailPassword({required String email, required String password}) async {
+    return await _getUser(() async => await remoteDataSource.loginWithEmailPassword(email: email, password: password));
   }
 
   @override
-  Future<Either<Failure, User>> signUpWithEmailPassword({
-    required String name,
-    required String email,
-    required String password,
-  }) async {
-    return await _getUser(
-      () async => await remoteDataSource.signUpWithEmailPassword(
-        name: name,
-        email: email,
-        password: password,
-      ),
-    );
-    // try {
-    //   final user = await remoteDataSource.signUpWithEmailPassword(
-    //     name: name,
-    //     email: email,
-    //     password: password,
-    //   );
-    //   return right(user);
-    // } on ServerException catch (e) {
-    //   return left(Failure(e.message));
-    // }
+  Future<Either<Failure, User>> signUpWithEmailPassword({required String name, required String email, required String password}) async {
+    return await _getUser(() async => await remoteDataSource.signUpWithEmailPassword(name: name, email: email, password: password));
   }
 
   Future<Either<Failure, User>> _getUser(Future<User> Function() fn) async {

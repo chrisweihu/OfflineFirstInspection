@@ -83,7 +83,7 @@ Map<String, dynamic> toJson() => _$InspectionFormDtoToJson(this);
 
 ### Authentication & Backend (Supabase):
 
-I use supabase for user authentication and relation database since I want structure data. Alternatively, Firebase is another great choice if you want nosql unstructured data.
+I use supabase for user authentication and relational database since I want structured data. Alternatively, Firebase is another great choice if you want nosql unstructured data.
 
 ## Tests:
 

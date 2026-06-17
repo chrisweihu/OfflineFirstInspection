@@ -1,9 +1,38 @@
 # OfflineFirstInspection
-This is flutter portfolio project designed for offline first mobiel app following clean architecture.
+This is flutter portfolio project designed for offline first mobile app that lets users create inspection forms in offline environment, and sync with server later when internet is available. It also contains two independent tab pages for demoing app performance & optimization for large image list view. They are not related to the inspection form feature at all. 
 
-App Architecture Design Diagram can be reviewed at the bottom of this readme file.
+Inspection Feature:
+User must first signup and signin in order to retrieve list of existing inspections in the main table view tab page. User can create new, edit, or view existing inspection form use the top app bar buttons and the floating add button. Tapping on the sync button to sync offline data to cloud. 
 
-Here are some of my major Flutter package choices:
+(Note: My Supabase app secret is omitted therefore you won't be able to signup or signin if you build my project, since this is my personal profolio project. Demo videos are provided to show case the app features) 
+
+## Feature first Project Structure
+I use feature based project structure which is flutter recommended modern standard. It is more organized than traditional layer structure.
+```
+/features
+      /auth
+            /data
+            /domain
+            /presentation (bloc)
+
+      /inspection_form
+            /data
+            /domain
+            /presentation (bloc)
+```
+
+## Clean Architecture
+I use Clean Architecture design pattern that divides my application into independent, modular layers (Data | Domain | Presentation) to enforce strict separation of concerns. I implemented Repository Pattern to provide a layer of abstraction between my application's core business logic and its data storage layer.
+
+Note: UseCase abstraction is one of the most debated topic among developers. I do agree that it is over engineering if your app only does simple CRUD operations. In this case, you can simply use IRepository interface inside of Bloc instead of UseCase. But if you are doing CRUD + additional business logic e.g data validation, user verification, then it is better to move that logic into UseCase to keep your Bloc clean.
+
+![Architecture Design Diagram](./readme/architecture_diagram.png)
+
+You can find more definition on flutter's architecture guide documnet on [UseCase here](https://docs.flutter.dev/app-architecture/guide)
+![Use_Case_Diagram](./readme/UseCase.png)
+
+
+## Flutter State Management and Other Essential Package Choices:
 
 ### State Management:
 
@@ -33,7 +62,7 @@ getIt.registerFactory<IAuthRemoteDataSource>(
 It supports complex local db schema migration. 
 It also make testing local schema migrations easy.
 
-### JSON Serialization Handling:
+### JSON Serialization:
 
 [json_serializable](https://pub.dev/packages/json_serializable) This package dynamically generate .g.dart code for toJson() and fromJson() methods.
 
@@ -52,11 +81,11 @@ factory InspectionFormDto.fromJson(Map<String, dynamic> json) => _$InspectionFor
 Map<String, dynamic> toJson() => _$InspectionFormDtoToJson(this);
 ```
 
-### Backend (Supabase):
+### Authentication & Backend (Supabase):
 
-I use supabase for user authentication and relation database. Firebase is another choice if you want nosql unsgtructured data.
+I use supabase for user authentication and relational database since I want structured data. Alternatively, Firebase is another great choice if you want nosql unstructured data.
 
-### Tests:
+## Tests:
 
 This project provides examples of various type of tests that covers:
  - Unit Tests
@@ -65,7 +94,7 @@ This project provides examples of various type of tests that covers:
 - Widget Tests
 - Integration Tests
  
-### Demo:
+## Demo:
 App demo: User Login -> Initialial Data Fetech -> CRUD offline inspection form -> Sync with Server 
 
 ![login inspection demo](./readme/loginInspection.gif)
@@ -82,26 +111,6 @@ App Performance demo: Use RepaintBoundary to isolate animation widget inside lis
 Note: loading animation widget isolated with RepaintBoundary does not cause its parent list cell to repaint compare to the ones without RepaintBoundary
 
 ![RepaintBoundary demo](./readme/RepaintBoundary.gif)
-
-## Architecture Design
-I use feature based project structure which is flutter modern standard:
-```
-/features
-      /auth
-            /data
-            /domain
-            /presentation (bloc)
-
-      /inspection_form
-            /data
-            /domain
-            /presentation (bloc)
-```
-
-Architecture Design Diagram:
-
-![Architecture Design Diagram](./readme/architecture_diagram.png)
-
 
 
 I would like to give a special shout-out to the [@RivaanRanawat](https://www.youtube.com/@RivaanRanawat) YouTube channel. I utilized some of his tutorial's UI theme classes to streamline the app's cosmetics, allowing me to focus heavily on core functionality.

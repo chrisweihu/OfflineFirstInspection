@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:offline_first_inspection/core/common/enums/inspection_status.dart';
-import 'package:offline_first_inspection/features/inspection_form/presentation/cubits/form_field/form_checkbox_cubit.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/widgets/inspection_checkbox_field.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/widgets/inspection_dropdown_field.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/widgets/inspection_text_field.dart';
@@ -21,8 +20,7 @@ Future<void> main() async {
   testWidgets('finds a InspectionCheckboxField widget', (tester) async {
     // Build an App with a Text widget that displays the letter 'H'.
     await tester.pumpWidget(
-      BlocProvider(
-        create: (context) => getIt<FormCheckboxCubit>(),
+      ProviderScope(
         child: MaterialApp(
           home: Scaffold(
             body: InspectionCheckboxField(label: 'Action Required', onSaved: (bool? b) {}),

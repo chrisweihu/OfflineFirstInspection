@@ -1,9 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:offline_first_inspection/core/common/cubits/app_user/app_user_cubit.dart';
-import 'package:offline_first_inspection/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:offline_first_inspection/features/inspection_form/presentation/blocs/inspection_table/inspection_table_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offline_first_inspection/init_dependencies.dart';
 import 'package:offline_first_inspection/main_app.dart';
 import 'package:path_provider/path_provider.dart';
@@ -28,13 +25,8 @@ void main() async {
   }
 
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => getIt<AuthBloc>()),
-        BlocProvider(create: (_) => getIt<AppUserCubit>()),
-        BlocProvider(create: (_) => getIt<InspectionTableBloc>()),
-      ],
-      child: const MainApp(),
+    const ProviderScope(
+      child: MainApp(),
     ),
   );
 }

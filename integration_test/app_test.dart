@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:offline_first_inspection/core/common/cubits/app_user/app_user_cubit.dart';
-import 'package:offline_first_inspection/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:offline_first_inspection/features/inspection_form/presentation/blocs/inspection_table/inspection_table_bloc.dart';
 import 'package:offline_first_inspection/init_dependencies.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:offline_first_inspection/main_app.dart';
@@ -16,16 +13,11 @@ Future<void> main() async {
   group('end-to-end test', () {
     testWidgets('tap on the floating action button, verify counter', (tester) async {
       // Load app widget.
-      final blocProviders = MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (_) => getIt<AuthBloc>()),
-          BlocProvider(create: (_) => getIt<AppUserCubit>()),
-          BlocProvider(create: (_) => getIt<InspectionTableBloc>()),
-        ],
-        child: const MainApp(),
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MainApp(),
+        ),
       );
-
-      await tester.pumpWidget(blocProviders);
 
       // Trigger a 3 secs wait.
       await tester.pumpAndSettle(const Duration(seconds: 3));

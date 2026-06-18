@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/pages/inspections_table_page.dart';
-import 'package:offline_first_inspection/features/large_listview/presentation/cubit/image_list/image_list_cubit.dart';
 import 'package:offline_first_inspection/features/large_listview/presentation/large_performant_list.dart';
 import 'package:offline_first_inspection/features/large_listview/presentation/optimized_image_list.dart';
-import 'package:offline_first_inspection/init_dependencies.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -67,12 +64,12 @@ class _HomePageState extends State<HomePage> {
                     ),
 
               // The Main Content Area
-              Expanded(
+              const Expanded(
                 child: TabBarView(
                   children: [
-                    const InspectionsTablePage(),
-                    const OptimizedListScreen(),
-                    BlocProvider(create: (BuildContext context) => getIt<ImageListCubit>(), child: const OptimizedImageListScreen()),
+                    InspectionsTablePage(),
+                    OptimizedListScreen(),
+                    OptimizedImageListScreen(),
                   ],
                 ),
               ),

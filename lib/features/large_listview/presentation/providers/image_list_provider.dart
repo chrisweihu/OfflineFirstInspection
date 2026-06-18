@@ -1,19 +1,37 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offline_first_inspection/features/large_listview/data/dtos/photo_dto.dart';
 
-part 'image_list_state.dart';
+@immutable
+sealed class ImageListState {}
 
-class ImageListCubit extends Cubit<ImageListState> {
-  ImageListCubit() : super(ImageListInitialState());
+final class ImageListInitialState extends ImageListState {}
+
+final class ImageListLoadedState extends ImageListState {
+  final List<PhotoDto> images;
+
+  ImageListLoadedState({required this.images});
+}
+
+final class ImageListFailedState extends ImageListState {
+  final String error;
+
+  ImageListFailedState({required this.error});
+}
+
+class ImageListNotifier extends AutoDisposeNotifier<ImageListState> {
+  @override
+  ImageListState build() {
+    return ImageListInitialState();
+  }
 
   Future<void> loadImages() async {
     try {
       final List<PhotoDto> photos = await _loadDataAsync();
-      emit(ImageListLoadedState(images: photos));
+      state = ImageListLoadedState(images: photos);
     } catch (e) {
-      emit(ImageListFailedState(error: "Failed to load image list. ${e.toString()}"));
+      state = ImageListFailedState(error: "Failed to load image list. ${e.toString()}");
     }
   }
 
@@ -21,7 +39,10 @@ class ImageListCubit extends Cubit<ImageListState> {
   /// and it uses free web service "https://picsum.photos" to display network images in our ListView
   Future<List<PhotoDto>> _loadDataAsync() async {
     // Simulate massive JSON payload
-    final String mockJson = List.generate(2000, (i) => '{"id": $i, "title": "Image $i", "url": "https://picsum.photos"}').toString();
+    final String mockJson = List.generate(
+      2000,
+      (i) => '{"id": $i, "title": "Image $i", "url": "https://picsum.photos"}',
+    ).toString();
 
     final photos = await compute(parsePhotosInIsolate, mockJson);
     return photos;
@@ -36,3 +57,7 @@ class ImageListCubit extends Cubit<ImageListState> {
     return parsed.map<PhotoDto>((json) => PhotoDto.fromJson(json)).toList();
   }
 }
+
+final imageListProvider = NotifierProvider.autoDispose<ImageListNotifier, ImageListState>(
+  ImageListNotifier.new,
+);

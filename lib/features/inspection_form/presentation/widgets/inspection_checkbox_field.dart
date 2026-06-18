@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:offline_first_inspection/features/inspection_form/presentation/cubits/form_field/form_checkbox_cubit.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offline_first_inspection/features/inspection_form/presentation/providers/form_checkbox_provider.dart';
 
-class InspectionCheckboxField extends StatefulWidget {
+class InspectionCheckboxField extends ConsumerStatefulWidget {
   const InspectionCheckboxField({
     super.key,
     required this.label,
@@ -13,11 +13,11 @@ class InspectionCheckboxField extends StatefulWidget {
   final bool checked;
   final void Function(bool?) onSaved;
   @override
-  State<InspectionCheckboxField> createState() =>
+  ConsumerState<InspectionCheckboxField> createState() =>
       _InspectionCheckboxFieldState();
 }
 
-class _InspectionCheckboxFieldState extends State<InspectionCheckboxField> {
+class _InspectionCheckboxFieldState extends ConsumerState<InspectionCheckboxField> {
   // 'late' allows us to access 'widget' because initialization
   // is deferred until the first time the variable is read.
   late bool _checked = widget.checked;
@@ -37,10 +37,14 @@ class _InspectionCheckboxFieldState extends State<InspectionCheckboxField> {
   @override
   void initState() {
     super.initState();
-    context.read<FormCheckboxCubit>().toggle(
-      value: _checked,
-      fieldId: widget.label,
-    );
+    Future.microtask(() {
+      if (mounted) {
+        ref.read(formCheckboxProvider.notifier).toggle(
+          value: _checked,
+          fieldId: widget.label,
+        );
+      }
+    });
   }
 
   @override
@@ -51,16 +55,16 @@ class _InspectionCheckboxFieldState extends State<InspectionCheckboxField> {
       builder: (FormFieldState<bool> state) {
         return Column(
           spacing: 6,
-          crossAxisAlignment: .start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.label, style: const TextStyle(fontWeight: .bold)),
+            Text(widget.label, style: const TextStyle(fontWeight: FontWeight.bold)),
             Switch(
               thumbIcon: thumbIcon,
               value: _checked,
               onChanged: (bool value) {
                 _checked = value;
                 state.didChange(_checked); // Updates the FormField state
-                context.read<FormCheckboxCubit>().toggle(
+                ref.read(formCheckboxProvider.notifier).toggle(
                   value: _checked,
                   fieldId: widget.label,
                 );

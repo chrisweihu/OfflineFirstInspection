@@ -1,23 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offline_first_inspection/core/common/widgets/loader.dart';
 import 'package:offline_first_inspection/features/large_listview/data/dtos/photo_dto.dart';
-import 'package:offline_first_inspection/features/large_listview/presentation/cubit/image_list/image_list_cubit.dart';
+import 'package:offline_first_inspection/features/large_listview/presentation/providers/image_list_provider.dart';
 
-class OptimizedImageListScreen extends StatefulWidget {
+class OptimizedImageListScreen extends ConsumerStatefulWidget {
   static MaterialPageRoute<OptimizedImageListScreen> route() => MaterialPageRoute(builder: (_) => const OptimizedImageListScreen());
 
   const OptimizedImageListScreen({super.key});
   @override
-  State<OptimizedImageListScreen> createState() => _OptimizedImageListScreenState();
+  ConsumerState<OptimizedImageListScreen> createState() => _OptimizedImageListScreenState();
 }
 
-class _OptimizedImageListScreenState extends State<OptimizedImageListScreen> {
+class _OptimizedImageListScreenState extends ConsumerState<OptimizedImageListScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ImageListCubit>().loadImages();
+    ref.read(imageListProvider.notifier).loadImages();
   }
 
   @override
@@ -39,17 +39,15 @@ class _OptimizedImageListScreenState extends State<OptimizedImageListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(imageListProvider);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Fast Scrolling Image List')),
-      body: BlocBuilder<ImageListCubit, ImageListState>(
-        builder: (context, state) {
-          return switch (state) {
-            ImageListInitialState() => const Loader(),
-            ImageListLoadedState(images: final photos) => _imageListView(photos),
-            ImageListFailedState(error: final message) => Text(message),
-          };
-        },
-      ),
+      body: switch (state) {
+        ImageListInitialState() => const Loader(),
+        ImageListLoadedState(images: final photos) => _imageListView(photos),
+        ImageListFailedState(error: final message) => Text(message),
+      },
     );
   }
 

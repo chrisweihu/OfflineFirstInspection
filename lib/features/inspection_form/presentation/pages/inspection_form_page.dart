@@ -1,17 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offline_first_inspection/core/common/widgets/loader.dart';
 import 'package:offline_first_inspection/features/inspection_form/domain/dtos/inspection_form_dto.dart';
-import 'package:offline_first_inspection/features/inspection_form/presentation/blocs/inspection_form/inspection_form_bloc.dart';
-import 'package:offline_first_inspection/features/inspection_form/presentation/cubits/form_field/form_checkbox_cubit.dart';
+import 'package:offline_first_inspection/features/inspection_form/presentation/providers/inspection_form_provider.dart';
+import 'package:offline_first_inspection/features/inspection_form/presentation/providers/form_checkbox_provider.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/widgets/inspection_checkbox_field.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/widgets/inspection_date_field.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/widgets/inspection_dropdown_field.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/widgets/inspection_text_field.dart';
-import 'package:offline_first_inspection/init_dependencies.dart';
 
-class InspectionFormPage extends StatefulWidget {
+class InspectionFormPage extends ConsumerStatefulWidget {
   static const fidInspectionStatus = 'Inspection Status';
   static const fidInspectionDate = 'Inspection Date';
   static const fidSummary = 'Summary';
@@ -25,13 +24,7 @@ class InspectionFormPage extends StatefulWidget {
     required InspectionFormDto formData,
     required String mode,
   }) => MaterialPageRoute(
-    builder: (context) => MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => getIt<InspectionFormBloc>()),
-        BlocProvider(create: (context) => getIt<FormCheckboxCubit>()),
-      ],
-      child: InspectionFormPage(formData: formData, mode: mode),
-    ),
+    builder: (context) => InspectionFormPage(formData: formData, mode: mode),
   );
 
   const InspectionFormPage({
@@ -44,10 +37,10 @@ class InspectionFormPage extends StatefulWidget {
   final InspectionFormDto _formData;
   final String _mode;
   @override
-  State<InspectionFormPage> createState() => _InspectionFormPageState();
+  ConsumerState<InspectionFormPage> createState() => _InspectionFormPageState();
 }
 
-class _InspectionFormPageState extends State<InspectionFormPage> {
+class _InspectionFormPageState extends ConsumerState<InspectionFormPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final InspectionFormDto _formData;
   late final String _initialMode;
@@ -72,15 +65,13 @@ class _InspectionFormPageState extends State<InspectionFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<InspectionFormBloc, InspectionFormState>(
-      builder: (context, state) {
-        return switch (state) {
-          InspectionFormFailureState() => Text('Failed to load form: $state.'),
-          InspectionFormLoadingState() => const Loader(),
-          _ => buildPageScaffold(state, context),
-        };
-      },
-    );
+    final state = ref.watch(inspectionFormProvider);
+
+    return switch (state) {
+      InspectionFormFailureState() => Text('Failed to load form: $state.'),
+      InspectionFormLoadingState() => const Loader(),
+      _ => buildPageScaffold(state, context),
+    };
   }
 
   Scaffold buildPageScaffold(InspectionFormState state, BuildContext context) {
@@ -114,9 +105,7 @@ class _InspectionFormPageState extends State<InspectionFormPage> {
                     );
                   }
 
-                  context.read<InspectionFormBloc>().add(
-                    InspectionFormSubmitEvent(data: _formData),
-                  );
+                  ref.read(inspectionFormProvider.notifier).submitInspectionForm(_formData);
                 }
               },
               label: const Text('Save'),
@@ -138,7 +127,7 @@ class _InspectionFormPageState extends State<InspectionFormPage> {
               key: _formKey,
               child: Column(
                 spacing: 10,
-                crossAxisAlignment: .start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   InspectionTextField(
                     onSaved: (val) =>
@@ -176,19 +165,17 @@ class _InspectionFormPageState extends State<InspectionFormPage> {
                     label: InspectionFormPage.fidReviewRequired,
                     checked: _formData.reviewRequired,
                   ),
-                  BlocBuilder<FormCheckboxCubit, FormCheckboxState>(
-                    // return true/false to determine whether or not to rebuild the widget with state
-                    buildWhen: (previousState, state) {
-                      return (state is FormCheckboxUpdatedState &&
-                          state.fieldId ==
-                              InspectionFormPage.fidReviewRequired);
-                    },
-                    builder: (context, state) {
-                      return (state is FormCheckboxUpdatedState && state.value)
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final checkboxState = ref.watch(formCheckboxProvider);
+                      final isSelected = checkboxState is FormCheckboxUpdatedState
+                          ? (checkboxState.allValues[InspectionFormPage.fidReviewRequired] ?? false)
+                          : _formData.reviewRequired;
+
+                      return isSelected
                           ? InspectionTextField(
                               initialValue: _formData.reviewDescription,
-                              controller:
-                                  _reviewDesController, //only controller can retain the text value in rebuild
+                              controller: _reviewDesController, //only controller can retain the text value in rebuild
                               onSaved: (val) {
                                 _formData.reviewDescription =
                                     val ?? _formData.reviewDescription;
@@ -207,19 +194,17 @@ class _InspectionFormPageState extends State<InspectionFormPage> {
                     label: InspectionFormPage.fidActionRequired,
                     checked: _formData.actionRequired,
                   ),
-                  BlocBuilder<FormCheckboxCubit, FormCheckboxState>(
-                    // return true/false to determine whether or not to rebuild the widget with state
-                    buildWhen: (previousState, state) {
-                      return (state is FormCheckboxUpdatedState &&
-                          state.fieldId ==
-                              InspectionFormPage.fidActionRequired);
-                    },
-                    builder: (context, state) {
-                      return (state is FormCheckboxUpdatedState && state.value)
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final checkboxState = ref.watch(formCheckboxProvider);
+                      final isSelected = checkboxState is FormCheckboxUpdatedState
+                          ? (checkboxState.allValues[InspectionFormPage.fidActionRequired] ?? false)
+                          : _formData.actionRequired;
+
+                      return isSelected
                           ? InspectionTextField(
                               initialValue: _formData.actionDescription,
-                              controller:
-                                  _actionDesController, //only controller can retain the text value in rebuild
+                              controller: _actionDesController, //only controller can retain the text value in rebuild
                               onSaved: (val) {
                                 _formData.actionDescription =
                                     val ?? _formData.actionDescription;

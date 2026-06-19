@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:offline_first_inspection/core/error/failtures.dart';
 import 'package:offline_first_inspection/core/usecase/usecase.dart';
 import 'package:offline_first_inspection/features/inspection_form/domain/dtos/inspection_form_dto.dart';
 import 'package:offline_first_inspection/features/inspection_form/domain/usecases/get_all_inspection_forms.dart';
@@ -12,6 +11,7 @@ import 'package:offline_first_inspection/features/inspection_form/presentation/p
 import 'package:offline_first_inspection/init_dependencies.dart';
 
 class MockGetAllLocalInspectionForms extends Mock implements GetAllLocalInspectionForms {}
+
 class MockSyncInspectionForms extends Mock implements SyncInspectionForms {}
 
 void main() {
@@ -78,8 +78,7 @@ void main() {
 
       final mockForms = [InspectionFormDto(id: '1', date: DateTime.now())];
 
-      when(() => mockGetAllLocalInspectionForms(any()))
-          .thenAnswer((_) async => Right(mockForms));
+      when(() => mockGetAllLocalInspectionForms(any())).thenAnswer((_) async => Right(mockForms));
 
       final notifier = container.read(inspectionTableProvider.notifier);
       await notifier.loadInspectionForms();
@@ -95,8 +94,7 @@ void main() {
 
       final mockForms = [InspectionFormDto(id: '2', date: DateTime.now())];
 
-      when(() => mockSyncInspectionForms(any()))
-          .thenAnswer((_) async => Right(mockForms));
+      when(() => mockSyncInspectionForms(any())).thenAnswer((_) async => Right(mockForms));
 
       final notifier = container.read(inspectionTableProvider.notifier);
       await notifier.syncInspectionForms();

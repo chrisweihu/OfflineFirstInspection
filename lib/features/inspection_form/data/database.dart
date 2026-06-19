@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:drift/internal/versioned_schema.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:flutter/foundation.dart';
 import 'package:offline_first_inspection/core/constants/constants.dart';
 import 'package:offline_first_inspection/features/inspection_form/data/database.steps.dart';
 import 'package:path_provider/path_provider.dart';

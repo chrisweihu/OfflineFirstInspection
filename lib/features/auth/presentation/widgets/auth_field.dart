@@ -1,12 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class AuthField extends StatelessWidget {
-  const AuthField({
-    super.key,
-    required this.hintText,
-    required this.controller,
-    this.isPassword = false,
-  });
+  const AuthField({super.key, required this.hintText, required this.controller, this.isPassword = false});
 
   final TextEditingController controller;
   final String hintText;

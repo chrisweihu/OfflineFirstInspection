@@ -1,13 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class InspectionDateField extends StatefulWidget {
-  const InspectionDateField({
-    super.key,
-    required this.label,
-    required this.onSaved,
-    this.isRequired = false,
-    this.initialValue,
-  });
+  const InspectionDateField({super.key, required this.label, required this.onSaved, this.isRequired = false, this.initialValue});
 
   final String label;
   final bool isRequired;

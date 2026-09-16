@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:offline_first_inspection/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:offline_first_inspection/core/network/connection_checker.dart';

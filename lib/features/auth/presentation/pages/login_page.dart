@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:offline_first_inspection/core/common/widgets/loader.dart';
 import 'package:offline_first_inspection/core/theme/app_pallete.dart';
 import 'package:offline_first_inspection/features/auth/presentation/bloc/auth_bloc.dart';
@@ -42,13 +42,9 @@ class _LoginPageState extends State<LoginPage> {
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthFailureState) {
-              context.showSnackBarNotification(
-                ErrorNotification(state.message),
-              );
+              context.showSnackBarNotification(ErrorNotification(state.message));
             } else if (state is AuthSuccessState) {
-              context.showSnackBarNotification(
-                const SuccessNotification('Login successfully!'),
-              );
+              context.showSnackBarNotification(const SuccessNotification('Login successfully!'));
             }
           },
           builder: (context, state) {
@@ -62,34 +58,19 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: .center,
                 children: [
                   const Center(
-                    child: Text(
-                      'Sign In',
-                      style: TextStyle(fontSize: 50, fontWeight: .bold),
-                    ),
+                    child: Text('Sign In', style: TextStyle(fontSize: 50, fontWeight: .bold)),
                   ),
                   const SizedBox(height: 30),
-                  AuthField(
-                    hintText: 'Email',
-                    controller: emailController,
-                    key: const ValueKey('login_email'),
-                  ),
+                  AuthField(hintText: 'Email', controller: emailController, key: const ValueKey('login_email')),
                   const SizedBox(height: 15),
-                  AuthField(
-                    hintText: 'Password',
-                    controller: passwordController,
-                    isPassword: true,
-                    key: const ValueKey('login_password'),
-                  ),
+                  AuthField(hintText: 'Password', controller: passwordController, isPassword: true, key: const ValueKey('login_password')),
                   const SizedBox(height: 20),
                   AuthGradientButton(
                     buttonText: 'Log In',
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         context.read<AuthBloc>().add(
-                          AuthLoginEvent(
-                            email: emailController.text.trim(),
-                            password: passwordController.text.trim(),
-                          ),
+                          AuthLoginEvent(email: emailController.text.trim(), password: passwordController.text.trim()),
                         );
                       }
                     },
@@ -97,12 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignUpPage(),
-                        ),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUpPage()));
                     },
                     child: RichText(
                       text: TextSpan(
@@ -111,11 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           TextSpan(
                             text: 'Sign up',
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  color: AppPallete.gradient2,
-                                  fontWeight: .bold,
-                                ),
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppPallete.gradient2, fontWeight: .bold),
                           ),
                         ],
                       ),

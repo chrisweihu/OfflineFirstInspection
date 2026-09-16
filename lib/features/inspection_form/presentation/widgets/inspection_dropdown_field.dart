@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:offline_first_inspection/core/common/enums/inspection_status.dart';
 
 class InspectionDropdownField extends StatefulWidget {
@@ -17,8 +17,7 @@ class InspectionDropdownField extends StatefulWidget {
   final void Function(InspectionStatus?) onSaved;
 
   @override
-  State<InspectionDropdownField> createState() =>
-      _InspectionDropdownFieldState();
+  State<InspectionDropdownField> createState() => _InspectionDropdownFieldState();
 }
 
 class _InspectionDropdownFieldState extends State<InspectionDropdownField> {

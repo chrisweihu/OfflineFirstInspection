@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 sealed class UserNotification {
   final String message;
@@ -22,12 +22,6 @@ extension NotificationDisplayer on BuildContext {
 
     ScaffoldMessenger.of(this)
       ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(notification.message),
-          backgroundColor: color,
-          behavior: .floating,
-        ),
-      );
+      ..showSnackBar(SnackBar(content: Text(notification.message), backgroundColor: color, behavior: .floating));
   }
 }

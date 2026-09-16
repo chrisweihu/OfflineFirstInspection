@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:offline_first_inspection/core/theme/theme.dart';
 
 class InspectionTextField extends StatefulWidget {
@@ -58,10 +58,7 @@ class _InspectionTextFieldState extends State<InspectionTextField> {
                   contentPadding: const .all(6),
                   hint: Text(
                     widget.hintText!,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 113, 112, 112),
-                      fontStyle: .italic,
-                    ),
+                    style: const TextStyle(color: Color.fromARGB(255, 113, 112, 112), fontStyle: .italic),
                   ),
                 ),
           validator: (value) {

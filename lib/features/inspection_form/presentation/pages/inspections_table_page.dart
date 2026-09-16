@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offline_first_inspection/core/utils/format_date.dart';
 import 'package:offline_first_inspection/features/inspection_form/domain/dtos/inspection_form_dto.dart';
@@ -27,33 +27,18 @@ class _InspectionsTablePageState extends State<InspectionsTablePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Align(
-          alignment: .centerStart,
-          child: Text('Inspections List'),
-        ),
+        title: const Align(alignment: .centerStart, child: Text('Inspections List')),
         actions: selectedRowIndex >= 0
             ? [
                 IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      InspectionFormPage.route(
-                        formData: selectedRow!,
-                        mode: 'Edit',
-                      ),
-                    );
+                    Navigator.push(context, InspectionFormPage.route(formData: selectedRow!, mode: 'Edit'));
                   },
                   icon: const Icon(CupertinoIcons.pencil_ellipsis_rectangle),
                 ),
                 IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      InspectionFormPage.route(
-                        formData: selectedRow!,
-                        mode: 'View',
-                      ),
-                    );
+                    Navigator.push(context, InspectionFormPage.route(formData: selectedRow!, mode: 'View'));
                   },
                   icon: const Icon(CupertinoIcons.eye),
                 ),
@@ -62,9 +47,7 @@ class _InspectionsTablePageState extends State<InspectionsTablePage> {
                 IconButton(
                   onPressed: () {
                     //sync
-                    context.read<InspectionTableBloc>().add(
-                      InspectionTableSyncEvent(),
-                    );
+                    context.read<InspectionTableBloc>().add(InspectionTableSyncEvent());
                   },
                   icon: const Icon(Icons.sync),
                 ),
@@ -75,10 +58,7 @@ class _InspectionsTablePageState extends State<InspectionsTablePage> {
           Navigator.push(
             context,
             InspectionFormPage.route(
-              formData: InspectionFormDto(
-                id: const Uuid().v1(),
-                date: DateTime.now(),
-              ),
+              formData: InspectionFormDto(id: const Uuid().v1(), date: DateTime.now()),
               mode: 'Create',
             ),
           );
@@ -88,12 +68,8 @@ class _InspectionsTablePageState extends State<InspectionsTablePage> {
       body: BlocBuilder<InspectionTableBloc, InspectionTableState>(
         builder: (context, state) {
           return switch (state) {
-            InspectionTableInitialState() => const Center(
-              child: Text('Load data to start'),
-            ),
-            InspectionTableLoadingState() => const Center(
-              child: CircularProgressIndicator(),
-            ),
+            InspectionTableInitialState() => const Center(child: Text('Load data to start')),
+            InspectionTableLoadingState() => const Center(child: CircularProgressIndicator()),
             InspectionTableLoadedState(data: final rows) => SingleChildScrollView(
               scrollDirection: .vertical,
               child: SingleChildScrollView(
@@ -105,48 +81,29 @@ class _InspectionsTablePageState extends State<InspectionsTablePage> {
                   ),
                   columns: const [
                     DataColumn(
-                      label: Text(
-                        'Date',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                      label: Text('Date', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                     DataColumn(
-                      label: Text(
-                        'Inspector',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                      label: Text('Inspector', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                     DataColumn(
-                      label: Text(
-                        'Status',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                      label: Text('Status', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                     DataColumn(
-                      label: Text(
-                        'Summary',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                      label: Text('Summary', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                     DataColumn(
-                      label: Text(
-                        'ID',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                      label: Text('ID', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ],
                   rows: List<DataRow>.generate(
                     rows.length,
                     (index) => DataRow(
-                      selected:
-                          selectedRowIndex ==
-                          index, // Check if this row is selected
+                      selected: selectedRowIndex == index, // Check if this row is selected
                       onSelectChanged: (value) {
                         setState(() {
                           selectedRowIndex = value == true ? index : -1;
-                          selectedRow = selectedRowIndex < 0
-                              ? null
-                              : rows[selectedRowIndex];
+                          selectedRow = selectedRowIndex < 0 ? null : rows[selectedRowIndex];
                         });
                       },
                       // $ index % 2 == 0 $ logic for oscillating grey/dark grey
@@ -158,11 +115,7 @@ class _InspectionsTablePageState extends State<InspectionsTablePage> {
                             : Colors.grey[800],
                       ),
                       cells: [
-                        DataCell(
-                          Text(
-                            formatDateBydMMMYYYY(rows[index].date?.toLocal()),
-                          ),
-                        ),
+                        DataCell(Text(formatDateBydMMMYYYY(rows[index].date?.toLocal()))),
                         DataCell(Text(rows[index].inspector)),
                         DataCell(Text(rows[index].status?.name ?? '')),
                         DataCell(Text(rows[index].summary)),
@@ -174,9 +127,7 @@ class _InspectionsTablePageState extends State<InspectionsTablePage> {
               ),
             ),
 
-            InspectionTableFailureState() => const Text(
-              'Failed to load table!',
-            ),
+            InspectionTableFailureState() => const Text('Failed to load table!'),
           };
         },
       ),

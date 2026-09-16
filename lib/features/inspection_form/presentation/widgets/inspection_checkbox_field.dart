@@ -1,20 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offline_first_inspection/features/inspection_form/presentation/cubits/form_field/form_checkbox_cubit.dart';
 
 class InspectionCheckboxField extends StatefulWidget {
-  const InspectionCheckboxField({
-    super.key,
-    required this.label,
-    this.checked = false,
-    required this.onSaved,
-  });
+  const InspectionCheckboxField({super.key, required this.label, this.checked = false, required this.onSaved});
   final String label;
   final bool checked;
   final void Function(bool?) onSaved;
   @override
-  State<InspectionCheckboxField> createState() =>
-      _InspectionCheckboxFieldState();
+  State<InspectionCheckboxField> createState() => _InspectionCheckboxFieldState();
 }
 
 class _InspectionCheckboxFieldState extends State<InspectionCheckboxField> {
@@ -28,19 +22,15 @@ class _InspectionCheckboxFieldState extends State<InspectionCheckboxField> {
   // ensures that when the Element Tree notifies the RenderObject of a state change,
   // the lookup of the new Icon is virtually free, avoiding any unnecessary allocations
   // during the frame paint.
-  static const WidgetStateProperty<Icon> thumbIcon =
-      WidgetStateProperty<Icon>.fromMap(<WidgetStatesConstraint, Icon>{
-        WidgetState.selected: Icon(Icons.check),
-        WidgetState.any: Icon(Icons.close),
-      });
+  static const WidgetStateProperty<Icon> thumbIcon = WidgetStateProperty<Icon>.fromMap(<WidgetStatesConstraint, Icon>{
+    WidgetState.selected: Icon(Icons.check),
+    WidgetState.any: Icon(Icons.close),
+  });
 
   @override
   void initState() {
     super.initState();
-    context.read<FormCheckboxCubit>().toggle(
-      value: _checked,
-      fieldId: widget.label,
-    );
+    context.read<FormCheckboxCubit>().toggle(value: _checked, fieldId: widget.label);
   }
 
   @override
@@ -60,10 +50,7 @@ class _InspectionCheckboxFieldState extends State<InspectionCheckboxField> {
               onChanged: (bool value) {
                 _checked = value;
                 state.didChange(_checked); // Updates the FormField state
-                context.read<FormCheckboxCubit>().toggle(
-                  value: _checked,
-                  fieldId: widget.label,
-                );
+                context.read<FormCheckboxCubit>().toggle(value: _checked, fieldId: widget.label);
               },
             ),
           ],

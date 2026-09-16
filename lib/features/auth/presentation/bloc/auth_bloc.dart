@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:offline_first_inspection/core/common/cubits/app_user/app_user_cubit.dart';
@@ -41,42 +41,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _onAuthSignUp(AuthSignUpEvent event, Emitter<AuthState> emit) async {
     //emit(AuthLoadingState());
 
-    final Either<Failure, User> res = await _userSignUp(
-      UserSignUpParams(
-        email: event.email,
-        password: event.password,
-        name: event.name,
-      ),
-    );
+    final Either<Failure, User> res = await _userSignUp(UserSignUpParams(email: event.email, password: event.password, name: event.name));
 
     //fpddart::Either<L,R>.fold(): Execute onLeft when value is [Left], otherwise execute onRight. Same as match.
-    res.fold(
-      (Failure l) => emit(AuthFailureState(l.message)),
-      (User r) => _emitAuthSuccess(r, emit),
-    );
+    res.fold((Failure l) => emit(AuthFailureState(l.message)), (User r) => _emitAuthSuccess(r, emit));
   }
 
   void _onAuthLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
     //emit(AuthLoadingState());
-    final res = await _userLogin(
-      UserLoginParams(email: event.email, password: event.password),
-    );
+    final res = await _userLogin(UserLoginParams(email: event.email, password: event.password));
 
-    res.fold(
-      (l) => emit(AuthFailureState(l.message)),
-      (r) => _emitAuthSuccess(r, emit),
-    );
+    res.fold((l) => emit(AuthFailureState(l.message)), (r) => _emitAuthSuccess(r, emit));
   }
 
-  FutureOr<void> _isUserLoggedIn(
-    IsAuthUserLoggedIn event,
-    Emitter<AuthState> emit,
-  ) async {
+  FutureOr<void> _isUserLoggedIn(IsAuthUserLoggedIn event, Emitter<AuthState> emit) async {
     final res = await _currentUser(NoParams());
-    res.fold(
-      (l) => emit(AuthFailureState(l.message)),
-      (r) => _emitAuthSuccess(r, emit),
-    );
+    res.fold((l) => emit(AuthFailureState(l.message)), (r) => _emitAuthSuccess(r, emit));
   }
 
   void _emitAuthSuccess(User user, Emitter<AuthState> emit) {

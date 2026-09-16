@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 typedef InspectionStatusEntry = DropdownMenuEntry<InspectionStatus>;
 
@@ -14,15 +14,14 @@ enum InspectionStatus {
   final Color color;
   final IconData icon;
 
-  static final List<InspectionStatusEntry> entires =
-      UnmodifiableListView<InspectionStatusEntry>(
-        values.map<InspectionStatusEntry>(
-          (em) => InspectionStatusEntry(
-            value: em,
-            label: em.label,
-            style: MenuItemButton.styleFrom(foregroundColor: em.color),
-            leadingIcon: Icon(em.icon),
-          ),
-        ),
-      );
+  static final List<InspectionStatusEntry> entires = UnmodifiableListView<InspectionStatusEntry>(
+    values.map<InspectionStatusEntry>(
+      (em) => InspectionStatusEntry(
+        value: em,
+        label: em.label,
+        style: MenuItemButton.styleFrom(foregroundColor: em.color),
+        leadingIcon: Icon(em.icon),
+      ),
+    ),
+  );
 }

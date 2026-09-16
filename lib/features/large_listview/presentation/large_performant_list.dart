@@ -36,7 +36,7 @@ Beyond ListView.builder, several techniques can further boost performance for ve
     using Dart's compute() function to prevent blocking the main UI thread (isolate) and causing the UI to freeze.
 */
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 

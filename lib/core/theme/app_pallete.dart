@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class AppPallete {
   static const Color backgroundColor = Color.fromRGBO(24, 24, 32, 1);

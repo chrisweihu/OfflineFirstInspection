@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:offline_first_inspection/core/error/failtures.dart';
@@ -10,37 +10,26 @@ import 'package:offline_first_inspection/features/inspection_form/domain/usecase
 part 'inspection_table_event.dart';
 part 'inspection_table_state.dart';
 
-class InspectionTableBloc
-    extends Bloc<InspectionTableEvent, InspectionTableState> {
+class InspectionTableBloc extends Bloc<InspectionTableEvent, InspectionTableState> {
   final GetAllLocalInspectionForms _getAllLocalInspectionForms;
   final SyncInspectionForms _syncInspectionForms;
 
-  InspectionTableBloc({
-    required GetAllLocalInspectionForms getAllInspectionForms,
-    required SyncInspectionForms syncInspectionForms,
-  }) : _syncInspectionForms = syncInspectionForms,
-       _getAllLocalInspectionForms = getAllInspectionForms,
-       super(InspectionTableInitialState()) {
+  InspectionTableBloc({required GetAllLocalInspectionForms getAllInspectionForms, required SyncInspectionForms syncInspectionForms})
+    : _syncInspectionForms = syncInspectionForms,
+      _getAllLocalInspectionForms = getAllInspectionForms,
+      super(InspectionTableInitialState()) {
     on<InspectionTableSyncEvent>((event, emit) async {
       emit(InspectionTableLoadingState());
 
-      final Either<Failure, List<InspectionFormDto>> res =
-          await _syncInspectionForms(NoParams());
+      final Either<Failure, List<InspectionFormDto>> res = await _syncInspectionForms(NoParams());
 
-      res.fold(
-        (l) => emit(InspectionTableFailureState(l.message)),
-        (r) => emit(InspectionTableLoadedState(data: r)),
-      );
+      res.fold((l) => emit(InspectionTableFailureState(l.message)), (r) => emit(InspectionTableLoadedState(data: r)));
     });
 
     on<InspectionTableLoadEvent>((event, emit) async {
-      final Either<Failure, List<InspectionFormDto>> res =
-          await _getAllLocalInspectionForms(NoParams());
+      final Either<Failure, List<InspectionFormDto>> res = await _getAllLocalInspectionForms(NoParams());
 
-      res.fold(
-        (l) => emit(InspectionTableFailureState(l.message)),
-        (r) => emit(InspectionTableLoadedState(data: r)),
-      );
+      res.fold((l) => emit(InspectionTableFailureState(l.message)), (r) => emit(InspectionTableLoadedState(data: r)));
     });
   }
 }

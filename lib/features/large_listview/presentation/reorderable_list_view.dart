@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Domain Layer Model
 sealed class ListItem {
@@ -15,23 +15,17 @@ class TaskItem extends ListItem {
 
 /// Presentation Layer
 class ReorderableListViewKeyDemo extends StatefulWidget {
-  static MaterialPageRoute<ReorderableListViewKeyDemo> route() =>
-      MaterialPageRoute(builder: (_) => const ReorderableListViewKeyDemo());
+  static MaterialPageRoute<ReorderableListViewKeyDemo> route() => MaterialPageRoute(builder: (_) => const ReorderableListViewKeyDemo());
 
   const ReorderableListViewKeyDemo({super.key});
 
   @override
-  State<ReorderableListViewKeyDemo> createState() =>
-      _ReorderableListViewKeyDemoState();
+  State<ReorderableListViewKeyDemo> createState() => _ReorderableListViewKeyDemoState();
 }
 
-class _ReorderableListViewKeyDemoState
-    extends State<ReorderableListViewKeyDemo> {
+class _ReorderableListViewKeyDemoState extends State<ReorderableListViewKeyDemo> {
   // Mocking our Data Source
-  final List<ListItem> _items = List.generate(
-    1000,
-    (i) => TaskItem(id: 'id_$i', content: 'Item ${i + 1}'),
-  );
+  final List<ListItem> _items = List.generate(1000, (i) => TaskItem(id: 'id_$i', content: 'Item ${i + 1}'));
 
   void _onReorder(int oldIndex, int newIndex) {
     setState(() {

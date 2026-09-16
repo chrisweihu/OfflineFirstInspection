@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:offline_first_inspection/core/theme/app_pallete.dart';
 import 'package:offline_first_inspection/core/utils/pick_image.dart';
 

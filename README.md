@@ -46,6 +46,8 @@ Bloc makes unit testing Bloc/Cubit super easy !
 -> Bloc emit new State 
 -> UI BlocBuilder listen to and refresh based on new State.
 ```
+[Riverpod](https://pub.dev/packages/flutter_riverpod) Branch:
+I also created a 'Riverpod' branch that replaced Bloc with Riverpod package for state management. Note: there is a compatibility issue between drift and riverpod_generator, therefore, I have to avoid using @riverpoad macro and write provider manually. 
 
 ### Dependency Injection (Service Locator):
 

@@ -17,11 +17,6 @@ class _HomePageState extends State<HomePage> {
   bool wideScreen = false;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 

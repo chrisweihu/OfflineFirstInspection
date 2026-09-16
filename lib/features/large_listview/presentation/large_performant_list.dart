@@ -38,6 +38,7 @@ Beyond ListView.builder, several techniques can further boost performance for ve
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
 
 // DATA MODEL
 class Item {
@@ -105,11 +106,10 @@ class _OptimizedListScreenState extends State<OptimizedListScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Turn on RepaintBoundary to See Diff')),
       body: ListView.builder(
+        scrollCacheExtent: const ScrollCacheExtent.pixels(300.0),
         controller: _scrollController,
         // ITEM EXTENT: Tells Flutter exactly how high each item is (prevents layout math)
         itemExtent: 60.0,
-        // CACHE EXTENT: Pre-renders 5 items off-screen area (both leading and tailing) for smoother scrolling
-        cacheExtent: 300.0,
         itemCount: _items.length + (_isLoading ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == _items.length) {
